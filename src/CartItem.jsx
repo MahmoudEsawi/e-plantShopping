@@ -2,13 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateQuantity, removeItem } from './CartSlice';
 import { useNavigate } from 'react-router-dom';
+import './CartItem.css';
 
 const CartItem = () => {
     const cartItems = useSelector((state) => state.cart.items);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // Calculate total checkout cost
+    // Show the total cart amount of the plants.
     const totalCost = cartItems.reduce((total, item) => total + (item.cost * item.quantity), 0);
 
     const handleIncrement = (item) => {
@@ -16,11 +17,9 @@ const CartItem = () => {
     };
 
     const handleDecrement = (item) => {
-        // Requirement: "If decrementing brings the quantity to 0, it should NOT automatically delete the item unless the user clicks the explicit 'Delete' button"
         if (item.quantity > 1) {
             dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
         } else {
-            // If quantity is 1 and user hits '-', we set to 0. It won't be deleted automatically.
             dispatch(updateQuantity({ name: item.name, quantity: 0 }));
         }
     };
@@ -61,7 +60,7 @@ const CartItem = () => {
 
                                 <div className="cart-item-controls">
                                     <button className="qty-btn" onClick={() => handleDecrement(item)}>-</button>
-                                    <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{item.quantity}</span>
+                                    <span style={{ fontSize: "1.2rem", fontWeight: "bold", padding: '0 10px' }}>{item.quantity}</span>
                                     <button className="qty-btn" onClick={() => handleIncrement(item)}>+</button>
                                 </div>
 
